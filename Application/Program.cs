@@ -4,12 +4,23 @@ class Program
 {
     static void Main(string[] args)
     {
+        if (args.Length == 0)
+        {
+            Console.WriteLine("Incorrect usage. Pass a string to be processed, e.g. \"222 2 22#\".");
+            Console.WriteLine("Space-delimited string must be wrapped in double quotes.");
+            Environment.Exit(1);
+        }
+
+        var input = args[0];
+
+        if (!args[0].EndsWith("#"))
+        {
+            Console.WriteLine("String must end with a hash, i.e. '#'.");
+            Environment.Exit(1);
+        }
+
         var keypad = new Keypad.OldPhonePad();
 
-        Console.WriteLine($"222 2 22#: {keypad.process("222 2 22#")}"); //=> output: CAB
-        Console.WriteLine($"33#: {keypad.process("33#")}"); //=> output: E
-        Console.WriteLine($"227 *#: {keypad.process("227 *#")}"); //=> output: B
-        Console.WriteLine($"4433555 555666#: {keypad.process("4433555 555666#")}"); //=> output: HELLO
-        Console.WriteLine($"8 88777444666 * 664#: {keypad.process("8 88777444666 * 664#")}"); //=> output: ?????
+        Console.WriteLine($"\"{input}\" emits \"{keypad.process(input)}\"");
     }
 }

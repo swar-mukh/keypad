@@ -34,7 +34,17 @@ public class OldPhonePad
             }
             else
             {
-                result.Append(Keys[previousCharacter][frequency]);
+                if (previousCharacter == '*')
+                {
+                    if (result.Length > 1)
+                    {
+                        result.Length -= 1;
+                    }
+                }
+                else
+                {
+                    result.Append(Keys[previousCharacter][frequency]);
+                }
 
                 if (currentCharacter == ' ')
                 {

@@ -10,7 +10,7 @@ public class OldPhonePadTests
     [InlineData("8 88777444666 * 664#", "turing")]
     public void OldPhonePadTheory(string input, string expectedResult)
     {
-        var _oldPhonePad = new Keypad.OldPhonePad();
+        var _oldPhonePad = new OldPhonePad();
 
         string result = _oldPhonePad.process(input);
 

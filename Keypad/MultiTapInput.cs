@@ -1,6 +1,6 @@
 ﻿namespace Keypad;
 
-public class OldPhonePad
+public class MultiTapInput: IKeypadTextInputMethod
 {
     private Dictionary<char, string> Keys = new Dictionary<char, string>
     {
@@ -18,7 +18,7 @@ public class OldPhonePad
         { '#', "" }
     };
 
-    public string process(string input)
+    public string Process(string input)
     {
         var result = new System.Text.StringBuilder();
         int frequency = 0;

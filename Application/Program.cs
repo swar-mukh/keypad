@@ -19,8 +19,8 @@ class Program
             Environment.Exit(1);
         }
 
-        var keypad = new Keypad.OldPhonePad();
+        var multiTapInput = new Keypad.MultiTapInput();
 
-        Console.WriteLine($"\"{input}\" emits \"{keypad.process(input)}\"");
+        Console.WriteLine($"\"{input}\" emits \"{multiTapInput.Process(input)}\"");
     }
 }

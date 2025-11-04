@@ -16,6 +16,11 @@ public class T9Input : IKeypadTextInputMethod
 
     public (bool Successful, string? ErrorIfAny) Validate(string sequenceOfCharacters)
     {
+        if (!sequenceOfCharacters.All(char.IsDigit))
+        {
+            return (false, "String must contain only digits.");
+        }
+
         return (true, null);
     }
 

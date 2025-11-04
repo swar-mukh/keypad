@@ -19,6 +19,14 @@ public class T9InputTests : IClassFixture<T9TestFixture>
         _fixture = fixture;
     }
 
+    [Fact]
+    public void Test_SequenceFailsWhenItContainsNonNumericCharacters()
+    {
+        var (Successful, _) = _fixture.InputMethod.Validate("123qw");
+
+        Assert.False(Successful);
+    }
+
     [Theory]
     [InlineData("123", "??")]
     [InlineData("84265 968", "thank you")]

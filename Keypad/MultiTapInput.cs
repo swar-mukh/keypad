@@ -1,6 +1,6 @@
 ﻿namespace Keypad;
 
-public class MultiTapInput: IKeypadTextInputMethod
+public class MultiTapInput : IKeypadTextInputMethod
 {
     private Dictionary<char, string> Keys = new Dictionary<char, string>
     {
@@ -17,6 +17,16 @@ public class MultiTapInput: IKeypadTextInputMethod
         { '0', " " },
         { '#', "" }
     };
+
+    public (bool Successful, string? ErrorIfAny) Validate(string sequenceOfCharacters)
+    {
+        if (!sequenceOfCharacters.EndsWith('#'))
+        {
+            return (false, "String must end with a hash, i.e. '#'.");
+        }
+
+        return (true, null);
+    }
 
     public string Process(string input)
     {

@@ -1,4 +1,6 @@
-﻿namespace Application;
+﻿using Keypad;
+
+namespace Application;
 
 class Program
 {
@@ -6,21 +8,65 @@ class Program
     {
         if (args.Length == 0)
         {
-            Console.WriteLine("Incorrect usage. Pass a string to be processed, e.g. \"222 2 22#\".");
-            Console.WriteLine("Space-delimited string must be wrapped in double quotes.");
+            ShowUsage();
             Environment.Exit(1);
         }
 
-        var input = args[0];
+        var (mode, sequence) = TryParseArgs(args);
+        IKeypadTextInputMethod? inputMethod = null;
 
-        if (!args[0].EndsWith("#"))
+        switch (mode)
         {
-            Console.WriteLine("String must end with a hash, i.e. '#'.");
-            Environment.Exit(1);
+            case "t9":
+                {
+                    inputMethod = new T9Input();
+                    break;
+                }
+            case "multitap":
+                {
+                    inputMethod = new MultiTapInput();
+                    break;
+                }
+            default:
+                {
+                    Console.WriteLine("Invalid mode!");
+                    Environment.Exit(1);
+                    break;
+                }
         }
 
-        var multiTapInput = new Keypad.MultiTapInput();
+        if (inputMethod is not null)
+        {
+            var (Successful, ErrorIfAny) = inputMethod.Validate(sequence);
 
-        Console.WriteLine($"\"{input}\" emits \"{multiTapInput.Process(input)}\"");
+            if (!Successful)
+            {
+                Console.WriteLine(ErrorIfAny);
+                Environment.Exit(1);
+            }
+        }
+
+        Console.WriteLine($"\"{sequence}\" in {mode} format emits \"{inputMethod?.Process(sequence)}\"");
+    }
+
+    static void ShowUsage()
+    {
+        Console.WriteLine("Incorrect usage!\n");
+        Console.WriteLine("Usage:\n");
+        Console.WriteLine("--mode=<t9|multitap> \"sequence\"\n");
+        Console.WriteLine("1. Pass a string to be processed, e.g. \"222 2 22#\".");
+        Console.WriteLine("2. Space-delimited string must be wrapped in double quotes.");
+    }
+
+    static (string Mode, string Sequence) TryParseArgs(string[] args)
+    {
+        string mode = "";
+
+        if (args[0].StartsWith("--mode"))
+        {
+            mode = args[0].Substring("--mode=".Length);
+        }
+
+        return (mode, args[1]);
     }
 }
